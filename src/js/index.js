@@ -48,6 +48,7 @@ function onSelectChange(evt) {
     })
     .catch(error => {
       Notify.failure(refs.error.textContent);
+      changeVisibility(refs.loader);
     });
 }
 
