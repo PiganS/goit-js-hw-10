@@ -30,7 +30,7 @@ function createCatList() {
       changeVisibility(refs.input);
     })
     .catch(error => {
-      Notify.failure('Oops! Something went wrong! Try reloading the page!');
+      Notify.failure(refs.error.textContent);
     });
 }
 
@@ -47,7 +47,7 @@ function onSelectChange(evt) {
       changeVisibility(refs.loader);
     })
     .catch(error => {
-      Notify.failure('Oops! Something went wrong! Try reloading the page!');
+      Notify.failure(refs.error.textContent);
     });
 }
 
