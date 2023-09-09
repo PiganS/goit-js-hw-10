@@ -4,33 +4,26 @@ import 'slim-select/dist/slimselect.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const refs = {
-  input: document.querySelector('.breed-select'),
+  select: document.querySelector('.breed-select'),
   catInfo: document.querySelector('.cat-info'),
   loader: document.querySelector('.loader'),
   error: document.querySelector('.error'),
 };
 
-refs.input.addEventListener('change', onSelectChange);
+refs.select.addEventListener('change', onSelectChange);
 
 function createCatList() {
   changeVisibility(refs.loader);
-  changeVisibility(refs.input);
 
   fetchBreeds()
     .then(data => {
-      const optionsList = data
-        .map(({ id, name }) => ` <option value="${id}">${name}</option>`)
-        .join('');
-      refs.input.innerHTML = optionsList;
-      new SlimSelect({
-        select: refs.input,
-      });
-
+      renderOptionsList(data);
       changeVisibility(refs.loader);
-      changeVisibility(refs.input);
+      changeVisibility(refs.select);
     })
     .catch(error => {
       Notify.failure(refs.error.textContent);
+      changeVisibility(refs.loader);
     });
 }
 
@@ -49,6 +42,7 @@ function onSelectChange(evt) {
     .catch(error => {
       Notify.failure(refs.error.textContent);
       changeVisibility(refs.loader);
+      refs.catInfo.innerHTML = '';
     });
 }
 
@@ -65,6 +59,16 @@ function renderMarkupInfo(data) {
 </div>`;
 
   refs.catInfo.innerHTML = beerdCard;
+}
+
+function renderOptionsList(data) {
+  const optionsList = data
+    .map(({ id, name }) => ` <option value="${id}">${name}</option>`)
+    .join('');
+  refs.select.innerHTML = optionsList;
+  new SlimSelect({
+    select: refs.select,
+  });
 }
 
 function changeVisibility(el) {
